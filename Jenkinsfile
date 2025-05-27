@@ -2,40 +2,23 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone') {
+        stage('Clone Repository') {
             steps {
-                git 'https://github.com/Prathmesh-502/project.git'
+                git credentialsId: 'github-creds', url: 'https://github.com/Prathmesh-502/my-web-app.git'
             }
         }
 
         stage('Build') {
             steps {
-                echo 'Building Web App...'
-                // For static apps, no actual build needed
-            }
-        }
-
-        stage('Test') {
-            steps {
-                echo 'Running basic tests...'
-                sh 'test -f index.html'  // check if index.html exists
+                echo 'No build steps needed for static HTML'
             }
         }
 
         stage('Deploy') {
             steps {
                 echo 'Deploying to local HTTP server...'
-                sh 'sudo cp -r * /var/www/html/'
+                sh 'cp index.html /var/www/html/index.html'
             }
-        }
-    }
-
-    post {
-        success {
-            echo 'Pipeline completed successfully!'
-        }
-        failure {
-            echo 'Pipeline failed!'
         }
     }
 }
